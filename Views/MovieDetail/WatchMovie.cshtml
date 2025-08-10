@@ -1,0 +1,81 @@
+﻿@using FilmProject.Models.MovieDetailApi
+@using System.Linq
+@{
+    var movieDetail = ViewBag.MovieDetail as Movie;
+    var currentEpisodeLink = ViewBag.CurrentEpisodeLink as string;
+    var currentEpisodeId = ViewBag.CurrentEpisodeId as string;
+    var episodes = ViewBag.Episodes as Episode[];
+
+    ViewData["Title"] = $"Xem phim {movieDetail?.name}";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/MovieDetail.css" asp-append-version="true" />
+}
+
+<div class="container-fluid watch-movie-container">
+    <div class="row">
+        <div class="col-lg-9 movie-player-col">
+            <a asp-controller="MovieDetail" asp-action="Index" asp-route-slug="@movieDetail?.slug" class="btn btn-primary btn-back">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+
+            @if (!string.IsNullOrEmpty(currentEpisodeLink))
+            {
+                <div class="video-container">
+                    <iframe src="@currentEpisodeLink" frameborder="0" allowfullscreen></iframe>
+                </div>
+            }
+            else
+            {
+                <div class="no-video-message">
+                    <p>Không tìm thấy video cho tập phim này.</p>
+                </div>
+            }
+
+            <h1 class="movie-title mt-3">@movieDetail?.name</h1>
+            <p class="movie-subtitle">
+                @if (movieDetail?.episode_current != "Full")
+                {
+                    <span>Đang xem: @(episodes?.SelectMany(s => s.server_data).FirstOrDefault(e => e.slug == currentEpisodeId)?.name)</span>
+                }
+            </p>
+        </div>
+
+        <div class="col-lg-3 episodes-list-col">
+            <div class="episodes-list-wrapper">
+                <h3>Danh sách tập</h3>
+                <hr />
+                <div class="list-episode">
+                    @if (episodes != null && episodes.Any())
+                    {
+                        @foreach (var server in episodes)
+                        {
+                            @if (server.server_data != null && server.server_data.Any())
+                            {
+                                <h5 class="server-name mt-3">@server.server_name</h5>
+                                <div class="list-group">
+                                    @foreach (var episode in server.server_data)
+                                    {
+                                        var isActive = (episode.slug == currentEpisodeId) ? "active" : "";
+                                        <a asp-controller="MovieDetail"
+                                           asp-action="WatchMovie"
+                                           asp-route-slug="@movieDetail?.slug"
+                                           asp-route-episodeId="@episode.slug"
+                                           class="list-group-item list-group-item-action @isActive">
+                                            @episode.name
+                                        </a>
+                                    }
+                                </div>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <p>Không có danh sách tập phim.</p>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>

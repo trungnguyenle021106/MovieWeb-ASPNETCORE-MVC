@@ -1,0 +1,87 @@
+﻿@using FilmProject.Models.GeneralMovieApi
+
+@{
+    ViewData["Title"] = ViewBag.CategoryName;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/GeneralMovie.css" asp-append-version="true" />
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            @await Html.PartialAsync("_GenerarlFilterPartial")
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">@ViewBag.CategoryName</h1>
+
+            @* Container chứa danh sách phim. Đây là nơi AJAX sẽ thêm các phim mới vào *@
+            <div id="movie-list-container" class="row">
+                @if (ViewBag.CategoryData != null)
+                {
+                    @* Gọi partial view chỉ hiển thị danh sách phim ban đầu *@
+                    @await Html.PartialAsync("_MovieListPartial", (ViewBag.CategoryData as Data)?.items?.ToList())
+                }
+            </div>
+
+            @* Phần tử hiển thị khi đang tải thêm phim *@
+            <div id="loader" class="text-center mt-4" style="display: none;">
+                <p>Đang tải...</p>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        const movieListContainer = document.getElementById('movie-list-container');
+        const loader = document.getElementById('loader');
+
+        // Lấy thông tin phân trang từ ViewBag
+        let currentPage = @(ViewBag.CurrentPage ?? 1);
+         const totalPages = @(ViewBag.TotalPages ?? 1);
+        let isLoading = false; // Biến cờ để ngăn các yêu cầu trùng lặp
+
+        window.addEventListener('scroll', async () => {
+                // Kiểm tra nếu đã cuộn gần đến cuối trang, có trang mới, và không có yêu cầu đang được xử lý console.log("-------------------");
+        // console.log("innerHeight:", window.innerHeight);
+        // console.log("scrollY:", window.scrollY);
+        // console.log("offsetHeight:", document.body.offsetHeight);
+        // console.log("currentPage:", currentPage);
+        // console.log("totalPages:", totalPages);
+        // console.log("isLoading:", isLoading);
+        // console.log("-------------------");
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && currentPage < totalPages && !isLoading) {
+                isLoading = true;
+                loader.style.display = 'block';
+
+                currentPage++;
+                // Xây dựng URL cho trang tiếp theo, giữ lại các tham số bộ lọc hiện có
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('page', currentPage);
+
+                try {
+                    // Gửi yêu cầu AJAX đến controller
+                    const response = await fetch(currentUrl.toString(), {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+
+                    if (response.ok) {
+                        const newMoviesHtml = await response.text();
+                        movieListContainer.insertAdjacentHTML('beforeend', newMoviesHtml);
+                    } else {
+                        console.error('Failed to load more movies. Status:', response.status);
+                    }
+                } catch (error) {
+                    console.error('Error loading more movies:', error);
+                } finally {
+                    isLoading = false;
+                    loader.style.display = 'none';
+                }
+            }
+        });
+    </script>
+}

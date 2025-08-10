@@ -1,0 +1,40 @@
+﻿@section Styles {
+    <link rel="stylesheet" href="~/css/Home.css" asp-append-version="true" />
+}
+@using FilmProject.Models.MovieCategoryApi
+
+<div class="text-center">
+    <h1 class="main-title">Chào mừng bạn đến với Web Phim</h1>
+</div>
+
+@if (ViewBag.AllMovieData != null)
+{
+    @foreach (var entry in ViewBag.AllMovieData as Dictionary<string, Rootobject>)
+    {
+        <h2 class="category-title">@entry.Key</h2>
+        <div class="row">
+            @foreach (var movie in entry.Value.data.items)
+            {
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <a asp-controller="MovieDetail" asp-action="Index" asp-route-slug="@movie.slug" class="text-decoration-none text-dark">
+                        <div class="movie-card">
+                            <img src="@movie.thumb_url"
+                                 class="img-fluid"
+                                 alt="@movie.name"
+                                 loading="lazy">
+                            <div class="card-body">
+                                <h5 class="mt-2 mb-0" style="color: white">@movie.name</h5>
+                                <h6 class="text-muted">Năm: @movie.year</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <hr class="my-5" />
+    }
+}
+else
+{
+    <p>Không có dữ liệu phim để hiển thị.</p>
+}

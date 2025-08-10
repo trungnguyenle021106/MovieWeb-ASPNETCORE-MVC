@@ -1,0 +1,79 @@
+﻿@using FilmProject.Models.GeneralMovieApi;
+
+@* Đây là một partial view dùng để hiển thị các bộ lọc cho trang tìm kiếm.
+    Nó sẽ sử dụng các ViewBag được truyền từ SearchController để giữ lại trạng thái
+    của các ô tìm kiếm sau mỗi lần load lại trang hoặc thực hiện AJAX.
+*@
+
+<form asp-action="Index" asp-controller="Search" method="get">
+    <div class="row g-2">
+        @* Trường ẩn để giữ lại từ khóa tìm kiếm khi áp dụng các bộ lọc khác *@
+        <input type="hidden" name="keyword" value="@ViewBag.CurrentKeyword" />
+
+        <div class="col-12 mb-3">
+            <label for="keywordInput" class="form-label visually-hidden">Từ khóa</label>
+            <input type="text"
+                   class="form-control"
+                   id="keywordInput"
+                   name="keyword"
+                   placeholder="Tìm kiếm phim..."
+                   value="@ViewBag.CurrentKeyword">
+        </div>
+
+        @* Bộ lọc Thể loại *@
+        <div class="col-md-3 mb-3">
+            <label for="categorySelect" class="form-label visually-hidden">Thể loại</label>
+            <select class="form-select" id="categorySelect" name="category">
+                <option value="">-- Thể loại --</option>
+                @if (ViewBag.CategoriesToFilter != null)
+                {
+                    @foreach (var category in ViewBag.CategoriesToFilter)
+                    {
+                        <option value="@category.slug" selected="@(category.slug == ViewBag.CurrentCategory)">@category.name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        @* Bộ lọc Quốc gia *@
+        <div class="col-md-3 mb-3">
+            <label for="countrySelect" class="form-label visually-hidden">Quốc gia</label>
+            <select class="form-select" id="countrySelect" name="country">
+                <option value="">-- Quốc gia --</option>
+                @if (ViewBag.Countries != null)
+                {
+                    @foreach (var country in ViewBag.Countries)
+                    {
+                        <option value="@country.slug" selected="@(country.slug == ViewBag.CurrentCountry)">@country.name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        @* Bộ lọc Năm phát hành *@
+        <div class="col-md-3 mb-3">
+            <label for="yearSelect" class="form-label visually-hidden">Năm</label>
+            <select class="form-select" id="yearSelect" name="year">
+                <option value="">-- Năm --</option>
+                @for (int i = DateTime.Now.Year; i >= 1990; i--)
+                {
+                    <option value="@i" selected="@(i == ViewBag.CurrentYear)">@i</option>
+                }
+            </select>
+        </div>
+
+        @* Bộ lọc Ngôn ngữ *@
+        <div class="col-md-3 mb-3">
+            <label for="languageSelect" class="form-label visually-hidden">Ngôn ngữ</label>
+            <select class="form-select" id="languageSelect" name="language">
+                <option value="">-- Ngôn ngữ --</option>
+                <option value="long-tieng" selected="@("long-tieng" == ViewBag.CurrentLanguage)">Lồng tiếng</option>
+                <option value="vietsub" selected="@("vietsub" == ViewBag.CurrentLanguage)">Vietsub</option>
+                <option value="thuyet-minh" selected="@("thuyet-minh" == ViewBag.CurrentLanguage)">Thuyết minh</option>
+            </select>
+        </div>
+    </div>
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+</form>

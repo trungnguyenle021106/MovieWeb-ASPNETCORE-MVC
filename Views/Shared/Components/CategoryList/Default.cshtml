@@ -1,0 +1,21 @@
+﻿@model List<(string name, string slug)>
+@using System.Linq
+
+<div class="dropdown-menu dropdown-menu-dark p-3" aria-labelledby="navbarDropdown" style="width: 600px;">
+    <div class="row">
+        @{
+            var totalItems = Model.Count;
+            var itemsPerColumn = (int)Math.Ceiling((double)totalItems / 3);
+
+            for (int i = 0; i < 3; i++)
+            {
+                <div class="col-4">
+                    @foreach (var genre in Model.Skip(i * itemsPerColumn).Take(itemsPerColumn))
+                    {
+                        <a class="dropdown-item" asp-controller="Category" asp-action="Index" asp-route-slug="@genre.slug">@genre.name</a>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>

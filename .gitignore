@@ -1,0 +1,19 @@
+## Visual Studio
+.vs/
+*.user
+*.suo
+
+## Build Artifacts
+[Bb]in/
+[Oo]bj/
+*.nupkg
+*.pdb
+*.orig
+
+## Packages
+packages/
+wwwroot/lib/
+node_modules/
+
+## Configuration Files
+appsettings.Development.json

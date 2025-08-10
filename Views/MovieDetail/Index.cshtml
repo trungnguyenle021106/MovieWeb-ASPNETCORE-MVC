@@ -1,0 +1,141 @@
+﻿@using FilmProject.Models.MovieDetailApi
+@using System.Linq
+
+@model Rootobject
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/MovieDetail.css" asp-append-version="true" />
+}
+
+@{
+    var movieDetail = Model?.movie ?? Model?.data?.item;
+    var episodes = Model?.episodes;
+
+    // Kiểm tra phim lẻ bằng cách kiểm tra nếu "episode_current" không chứa từ "Tập"
+    // Lưu ý: Cần kiểm tra null trước khi sử dụng
+    var isFullMovie = movieDetail != null && movieDetail.episode_current != null && !movieDetail.episode_current.Contains("Tập");
+
+    // Lấy slug của tập đầu tiên
+    string firstEpisodeSlug = null;
+    if (episodes != null && episodes.Any())
+    {
+        var firstServer = episodes.FirstOrDefault();
+        if (firstServer?.server_data != null && firstServer.server_data.Any())
+        {
+            firstEpisodeSlug = firstServer.server_data.FirstOrDefault()?.slug;
+        }
+    }
+
+    ViewData["Title"] = movieDetail?.name;
+}
+
+<div class="container movie-detail-container">
+    <div class="row">
+        <div class="col-lg-4 col-md-5">
+            <img src="@movieDetail?.thumb_url" alt="@movieDetail?.name" class="img-fluid movie-thumbnail" loading="lazy">
+            <h1 class="mt-4">@movieDetail?.name (@movieDetail?.origin_name)</h1>
+            <p class="text-muted">Năm phát hành: @movieDetail?.year</p>
+            <p>Chất lượng: <strong>@movieDetail?.quality</strong></p>
+            <p>Ngôn ngữ: <strong>@movieDetail?.lang</strong></p>
+
+            @if (isFullMovie)
+            {
+                if (!string.IsNullOrEmpty(firstEpisodeSlug))
+                {
+                    <a asp-controller="MovieDetail" asp-action="WatchMovie" asp-route-slug="@movieDetail.slug" asp-route-episodeId="@firstEpisodeSlug" class="btn btn-primary btn-watch mt-3">
+                        Xem Phim
+                    </a>
+                }
+                else
+                {
+                    <button class="btn btn-secondary mt-3" disabled>Không có video</button>
+                }
+            }
+        </div>
+
+        <div class="col-lg-8 col-md-7 mt-4 mt-md-0">
+            <h3>Nội dung phim</h3>
+            <p>@Html.Raw(movieDetail?.content)</p>
+
+            <hr />
+
+            <h3>Thông tin chi tiết</h3>
+            <ul class="list-unstyled">
+                <li><strong>Tình trạng:</strong> @movieDetail?.episode_current</li>
+                <li><strong>Thời lượng:</strong> @movieDetail?.time</li>
+                <li>
+                    <strong>Đạo diễn:</strong>
+                    @if (movieDetail?.director != null && movieDetail.director.Any())
+                    {
+                        @string.Join(", ", movieDetail.director)
+                    }
+                    else
+                    {
+                        <span>Đang cập nhật</span>
+                    }
+                </li>
+                <li>
+                    <strong>Diễn viên:</strong>
+                    @if (movieDetail?.actor != null && movieDetail.actor.Any())
+                    {
+                        @string.Join(", ", movieDetail.actor)
+                    }
+                    else
+                    {
+                        <span>Đang cập nhật</span>
+                    }
+                </li>
+                <li>
+                    <strong>Thể loại:</strong>
+                    @if (movieDetail?.category != null && movieDetail.category.Any())
+                    {
+                        @string.Join(", ", movieDetail.category.Select(c => c.name))
+                    }
+                    else
+                    {
+                        <span>Đang cập nhật</span>
+                    }
+                </li>
+                <li>
+                    <strong>Quốc gia:</strong>
+                    @if (movieDetail?.country != null && movieDetail.country.Any())
+                    {
+                        @string.Join(", ", movieDetail.country.Select(c => c.name))
+                    }
+                    else
+                    {
+                        <span>Đang cập nhật</span>
+                    }
+                </li>
+            </ul>
+
+            @if (!isFullMovie)
+            {
+                <hr />
+                <h3>Danh sách tập</h3>
+                @if (episodes != null && episodes.Any() && episodes.Any(s => s.server_data != null && s.server_data.Any()))
+                {
+                    @foreach (var server in episodes)
+                    {
+                        if (server.server_data != null && server.server_data.Any())
+                        {
+                            <h4>@server.server_name</h4>
+                            <div class="episode-list">
+                                @foreach (var episode in server.server_data)
+                                {
+                                    <a asp-controller="MovieDetail" asp-action="WatchMovie" asp-route-slug="@movieDetail.slug" asp-route-episodeId="@episode.slug" class="btn btn-outline-secondary episode-button">
+                                        @episode.name
+                                    </a>
+                                }
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <p>Không có danh sách tập phim.</p>
+                }
+            }
+        </div>
+    </div>
+</div>

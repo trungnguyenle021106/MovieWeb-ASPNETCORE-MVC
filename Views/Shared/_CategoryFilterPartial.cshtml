@@ -1,0 +1,62 @@
+﻿@using FilmProject.Models.GeneralMovieApi
+@using System.Collections.Generic
+@using System.Linq
+
+<div class="filter-wrapper">
+    <h3>Bộ lọc</h3>
+    <hr />
+    <form asp-action="Index" asp-controller="Category" method="get" class="d-flex flex-wrap align-items-end gap-3">
+        <div class="flex-grow-1 filter-item">
+            <label for="category" class="form-label">Thể loại</label>
+            <select name="slug" id="category" class="form-select">
+                <option value="">Tất cả</option>
+                @if (ViewBag.CategoriesToFilter != null)
+                {
+                    @foreach (var c in (List<(string name, string slug)>)ViewBag.CategoriesToFilter)
+                    {
+                        <option value="@c.slug" selected="@(c.slug == ViewBag.CurrentSlug)">@c.name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="flex-grow-1 filter-item">
+            <label for="country" class="form-label">Quốc gia</label>
+            <select name="country" id="country" class="form-select">
+                <option value="">Tất cả</option>
+                @if (ViewBag.Countries != null)
+                {
+                    @foreach (var c in (List<Country>)ViewBag.Countries)
+                    {
+                        <option value="@c.slug" selected="@(c.slug == ViewBag.CurrentCountry)">@c.name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="flex-grow-1 filter-item">
+            <label for="year" class="form-label">Năm phát hành</label>
+            <select name="year" id="year" class="form-select">
+                <option value="">Tất cả</option>
+                @for (int y = 2025; y >= 2010; y--)
+                {
+                    <option value="@y" selected="@(y == ViewBag.CurrentYear)">@y</option>
+                }
+            </select>
+        </div>
+
+        <div class="flex-grow-1 filter-item">
+            <label for="language" class="form-label">Ngôn ngữ</label>
+            <select name="language" id="language" class="form-select">
+                <option value="">Tất cả</option>
+                <option value="vietsub" selected="@("vietsub" == ViewBag.CurrentLanguage)">Vietsub</option>
+                <option value="thuyet-minh" selected="@("thuyet-minh" == ViewBag.CurrentLanguage)">Thuyết Minh</option>
+                <option value="long-tieng" selected="@("long-tieng" == ViewBag.CurrentLanguage)">Lồng Tiếng</option>
+            </select>
+        </div>
+
+        <div class="d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Áp dụng</button>
+        </div>
+    </form>
+</div>

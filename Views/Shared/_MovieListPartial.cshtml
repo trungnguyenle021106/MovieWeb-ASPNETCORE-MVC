@@ -1,0 +1,25 @@
+﻿@using FilmProject.Models.GeneralMovieApi
+
+@model List<Item>
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var movie in Model)
+    {
+        <div class="col-6 col-md-4 col-lg-3 mb-4">
+            <a asp-controller="MovieDetail" asp-action="Index" asp-route-slug="@movie.slug" class="text-decoration-none text-dark">
+                <div class="movie-card">
+                    <img src="@movie.thumb_url" class="img-fluid" alt="@movie.name" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="mt-2 mb-0" style="color: white">@movie.name</h5>
+                        <h6 class="text-muted">Năm: @movie.year</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+}
+else
+{
+    <p>Không có phim nào để hiển thị trong thể loại này.</p>
+}

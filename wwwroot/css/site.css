@@ -1,0 +1,84 @@
+﻿/* Màu sắc và font chữ */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+}
+
+/* Thanh điều hướng */
+.navbar-brand img {
+    height: 40px; /* Chiều cao logo */
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+    .nav-link:hover {
+        color: #00ff8c !important;
+    }
+
+.dropdown-menu.dropdown-menu-dark {
+    background-color: #212529;
+    border: 1px solid #343a40;
+}
+
+.dropdown-item {
+    color: #e0e0e0;
+}
+
+    .dropdown-item:hover {
+        background-color: #00ff8c;
+        color: #121212;
+    }
+
+/* Form tìm kiếm */
+.search-form {
+    flex-grow: 1;
+    max-width: 500px;
+}
+
+.form-control {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    width: 100%;
+}
+
+    .form-control::placeholder {
+        color: #999;
+    }
+
+.btn-search {
+    background-color: transparent;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    /* Cập nhật CSS cho icon bên trong nút */
+    .btn-search i {
+        color: white; /* Màu của icon, đảm bảo tương phản với nền nút */
+        font-size: 1.2rem; /* Kích thước của icon */
+        cursor: pointer;
+    }
+
+/* Footer */
+.footer {
+    background-color: #181818;
+    color: #888;
+    height : 300px
+}
+
+    .footer a {
+        color: #00ff8c;
+        text-decoration: none;
+    }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
