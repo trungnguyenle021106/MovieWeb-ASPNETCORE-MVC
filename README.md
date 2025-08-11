@@ -6,7 +6,6 @@ Web được thiết kế để xem phim ( Sử dụng KKPhim API để lấy c�
 - [Công nghệ sử dụng](#công-nghệ-sử-dụng)
 - [Các bước cài đặt](#các-bước-cài-đặt)
 - [Một số hình ảnh web](#một-số-hình-ảnh-web)
-  - [TRANG CHÍNH](#trang-chính)
 
 ## Tính năng
 + Phim bộ, Phim lẻ, Hoạt hình, Phim theo thể loại, Tìm kiếm phim:
