@@ -8,9 +8,7 @@ Web được thiết kế để xem phim ( Sử dụng KKPhim API để lấy c�
 - [Một số hình ảnh web](#một-số-hình-ảnh-web)
 
 ## Tính năng
-+ Phim bộ, Phim lẻ, Hoạt hình, Phim theo thể loại, Tìm kiếm phim:
-  + Các thao tác CRUD (Tạo, Đọc, Cập nhật, Xóa) đầy đủ cho các sản phẩm điện tử.
-  + Thuộc tính sản phẩm linh hoạt để dễ dàng mở rộng và quản lý các danh mục sản phẩm đa dạng.
++ Phim bộ, Phim lẻ, Hoạt hình, Phim theo thể loại, Tìm kiếm phim, Bộ lọc phim
 ## Kiến trúc
 Dự án được xây dựng dựa trên Kiến trúc MVC.
 ## Công nghệ sử dụng
