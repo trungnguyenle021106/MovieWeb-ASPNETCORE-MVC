@@ -1,27 +1,21 @@
-﻿using FilmProject.Models.MovieCategoryApi;
-
-namespace FilmProject.Models.MovieDetailApi
+﻿namespace FilmProject.Models.MovieDetailApi
 {
     public class Rootobject
     {
         public bool status { get; set; }
         public string msg { get; set; }
 
-        // Trường hợp cũ: dữ liệu phim nằm ở đây
         public Movie? movie { get; set; }
 
-        // Trường hợp mới: dữ liệu phim nằm trong data
         public Data? data { get; set; }
 
         public Episode[] episodes { get; set; }
     }
 
-    // Thêm class Data để khớp với cấu trúc JSON mới
     public class Data
     {   
-        public Movie item { get; set; } // Đối tượng phim nằm ở đây
+        public Movie item { get; set; } 
     }
-
 
     public class Movie
     {

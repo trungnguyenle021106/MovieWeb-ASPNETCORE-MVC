@@ -27,8 +27,8 @@ h1 {
     }
 
     .movie-card img {
-        width: 100%;
-        height: auto;
+        width: 290px;
+        height: 163.25px;
         display: block;
         border-bottom: 2px solid #3a3a3a;
     }
@@ -65,7 +65,7 @@ h1 {
 
     .form-select:focus,
     .form-control:focus {
-        background-color: #444;
+/*        background-color: #444;*/
         border-color: #777;
         box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
     }

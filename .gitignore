@@ -16,4 +16,4 @@ wwwroot/lib/
 node_modules/
 
 ## Configuration Files
-appsettings.Development.json
+appsettings.json

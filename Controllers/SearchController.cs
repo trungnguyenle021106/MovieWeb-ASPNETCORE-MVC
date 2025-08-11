@@ -25,6 +25,29 @@ namespace FilmProject.Controllers
                 // Nếu keyword rỗng, bạn có thể trả về một view trống hoặc chuyển hướng đến trang chủ
                 return View("Index");
             }
+            var categoriesToFetch = new List<(string name, string slug)>
+            {
+                ("Hành Động", "hanh-dong"),
+                ("Cổ Trang", "co-trang"),
+                ("Chiến Tranh", "chien-tranh"),
+                ("Viễn Tưởng", "vien-tuong"),
+                ("Kinh Dị", "kinh-di"),
+                ("Tài Liệu", "tai-lieu"),
+                ("Bí Ẩn", "bi-an"),
+                ("Thể Thao", "the-thao"),
+                ("Tình Cảm", "tinh-cam"),
+                ("Tâm Lý", "tam-ly"),
+                ("Gia Đình", "gia-dinh"),
+                ("Phiêu Lưu", "phieu-luu"),
+                ("Âm Nhạc", "am-nhac"),
+                ("Hình Sự", "hinh-su"),
+                ("Học Đường", "hoc-duong"),
+                ("Hài Hước", "hai-huoc"),
+                ("Thần Thoại", "than-thoai"),
+                ("Võ Thuật", "vo-thuat"),
+                ("Khoa Học", "khoa-hoc"),
+                ("Chính Kịch", "chinh-kich")
+            };
 
             // Khởi tạo HttpClient
             var httpClient = _httpClientFactory.CreateClient();
@@ -51,6 +74,7 @@ namespace FilmProject.Controllers
             {
                 queryBuilder.Append($"&sort_lang={language}");
             }
+
 
             // API tìm kiếm cũng có thể có các tham số sort_field và sort_type nếu bạn muốn
             // queryBuilder.Append("&sort_field=_id");
@@ -92,6 +116,7 @@ namespace FilmProject.Controllers
                     ViewBag.CurrentPage = searchData.data._params?.pagination?.currentPage ?? 1;
                     ViewBag.TotalPages = searchData.data._params?.pagination?.totalPages ?? 1;
 
+                    ViewBag.CategoriesToFilter = categoriesToFetch;
                     ViewBag.CurrentKeyword = keyword;
                     ViewBag.SearchData = searchData.data;
                     ViewBag.CurrentCategory = category;

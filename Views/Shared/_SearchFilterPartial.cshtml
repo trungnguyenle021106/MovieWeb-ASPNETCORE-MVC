@@ -29,7 +29,8 @@
                 {
                     @foreach (var category in ViewBag.CategoriesToFilter)
                     {
-                        <option value="@category.slug" selected="@(category.slug == ViewBag.CurrentCategory)">@category.name</option>
+                        <option value="@category.Item2" selected="@(category.Item2 == ViewBag.CurrentCategory)">@category.Item1</option>
+                  
                     }
                 }
             </select>

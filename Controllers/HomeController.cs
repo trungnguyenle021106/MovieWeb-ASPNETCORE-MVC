@@ -1,5 +1,5 @@
 ﻿using FilmProject.Models;
-using FilmProject.Models.MovieCategoryApi;
+using FilmProject.Models.GeneralMovieApi;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -26,26 +26,26 @@ namespace FilmProject.Controllers
 
             var categoriesToFetch = new List<(string name, string slug)>
             {
-                //("Phim Hành Động", "hanh-dong"),
-                //("Phim Cổ Trang", "co-trang"),
-                //("Phim Chiến Tranh", "chien-tranh"),
-                //("Phim Viễn Tưởng", "vien-tuong"),
-                //("Phim Kinh Dị", "kinh-di"),
-                //("Phim Tài Liệu", "tai-lieu"),
-                //("Phim Bí Ẩn", "bi-an"),
-                //("Phim Thể Thao", "the-thao"),
-                //("Phim Tình Cảm", "tinh-cam"),
-                //("Phim Tâm Lý", "tam-ly"),
-                //("Phim Gia Đình", "gia-dinh"),
-                //("Phim Phiêu Lưu", "phieu-luu"),
-                //("Phim Âm Nhạc", "am-nhac"),
+                ("Phim Hành Động", "hanh-dong"),
+                ("Phim Cổ Trang", "co-trang"),
+                ("Phim Chiến Tranh", "chien-tranh"),
+                ("Phim Viễn Tưởng", "vien-tuong"),
+                ("Phim Kinh Dị", "kinh-di"),
+                ("Phim Tài Liệu", "tai-lieu"),
+                ("Phim Bí Ẩn", "bi-an"),
+                ("Phim Thể Thao", "the-thao"),
+                ("Phim Tình Cảm", "tinh-cam"),
+                ("Phim Tâm Lý", "tam-ly"),
+                ("Phim Gia Đình", "gia-dinh"),
+                ("Phim Phiêu Lưu", "phieu-luu"),
+                ("Phim Âm Nhạc", "am-nhac"),
                 ("Phim Hình Sự", "hinh-su"),
                 ("Phim Học Đường", "hoc-duong"),
                 ("Phim Hài Hước", "hai-huoc"),
                 ("Phim Thần Thoại", "than-thoai"),
                 ("Phim Võ Thuật", "vo-thuat"),
                 ("Phim Khoa Học", "khoa-hoc"),
-                //("Phim Chính Kịch", "chinh-kich")
+                ("Phim Chính Kịch", "chinh-kich")
             };
 
             var allMovieData = new Dictionary<string, Rootobject>();
@@ -61,7 +61,7 @@ namespace FilmProject.Controllers
                         var apiResponse = await _httpClient.GetStringAsync(apiUrl);
                         var genreData = JsonConvert.DeserializeObject<Rootobject>(apiResponse);
 
-                        if (genreData?.data?.items != null && genreData.status)
+                        if (genreData?.data?.items != null && genreData.status == "true")
                         {
                             var cdnDomain = genreData.data.APP_DOMAIN_CDN_IMAGE;
                             foreach (var movie in genreData.data.items)
